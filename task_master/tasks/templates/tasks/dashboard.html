@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Tasks to do</h1>
+    <p>Please, choose task or <a href="{% url 'add_task' %}">create new</a>:</p>
+    {% for task in tasks %}
+        <p>
+            <a href="{% url 'task_detail' pk=task.id %}">{{ task.title }}</a><br>
+            {{ task.body|truncatechars:30 }}
+        </p>
+    {% endfor %}
+{% endblock %}

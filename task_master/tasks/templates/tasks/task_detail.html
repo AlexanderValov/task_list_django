@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+
+    <a href='{{ tasks.get_absolute_url }}delete_task'>Delete task</a>
+    <h1>{{ task.title }}</h1>
+    <i><p>Category: {{ task.category}}</p></i>
+    <p>{{ task.body }}</p>
+    {% if task.completed == False %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form_complete }}
+            <p><button type="submit" value="is_done">Complete</button></p>
+        </form>
+    {% endif %}
+
+    <h1>Subtasks:</h1>
+    {% if subtasks %}
+    <ul>
+        {% for subtask in subtasks %}
+            <li>{{ subtask.subtask|linebreaks }}</li>
+        {% endfor %}
+    {% else %}
+        <p>No subtasks.Create a new subtask:</p>
+    <ul>
+    {% endif %}
+
+    {% if task.completed == False %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ subtask_form.as_p }}
+            <p><button type="submit" value="subtask">Create subtask</button></p>
+        </form>
+    {% endif %}
+{% endblock %}

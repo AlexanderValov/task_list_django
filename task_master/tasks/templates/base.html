@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link href="{% static 'css/base.css' %}" rel='stylesheet'>
+    </head>
+    <body>
+        <div id= 'header'>
+            <span class='logo'>Task master</span>
+            {% if request.user.is_authenticated %}
+            <ul class='menu'>
+                <li>
+                    <a href="{% url 'dashboard' %}">My dashboard</a>
+                </li>
+                <li>
+                    <a href="{% url 'completed' %}">Completed tasks</a>
+                </li>
+            </ul>
+            {% endif %}
+            <span class="user">
+                {% if request.user.is_authenticated %}
+                    Hello, {{ request.user.username }} | 
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Log-in</a>
+                {% endif %}
+            </span>
+        </div>
+        <div id='content'>
+            {% if request.user.is_authenticated %}
+            Categories:
+            {% for category in categories %}
+                <a href="{% url 'categories' pk=category.id %}">{{ category }}</a>
+            {% endfor %}
+            {% endif %}
+            {% block content %}
+            {% endblock %}
+        </div>
